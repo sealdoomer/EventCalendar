@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>EventCalendar</title>
+<link rel="stylesheet" type="text/css" href="css/fullcalendar.css">
+<style type="text/css">
+#calendar{width:960px; margin:20px auto 10px auto}
+</style>
+<script src='js/jquery-1.9.1.min.js'></script>
+<script src='js/jquery-ui-1.10.2.custom.min.js'></script>
+<script src='js/fullcalendar.min.js'></script>
+<script type="text/javascript">
+var openFile = function(event){
+		var input = event.target.files[0];
+
+		var reader = new FileReader();
+		reader.onload = function(e) {
+			var text = reader.result;
+			var data ={'events':[]};
+			var obj = jQuery.parseJSON(text);
+			for(var i = 0; i < obj.events.length; i++){
+				// put function refill here!
+				console.log(obj.events[i].occasion);
+				data.events.push({'title':obj.events[i].occasion + "\n invite count: " + obj.events[i].invited_count, 'start': new Date(obj.events[i].year, obj.events[i].month-1, obj.events[i].day), 'editable':true});
+				
+			}
+			$('#calendar').html("");
+			$('#calendar').fullCalendar(data);
+		}
+		reader.readAsText(input);
+	};
+	
+	//function refill(events){	}
+$(function() {
+	$('#calendar').fullCalendar({});
+	});
+	
+	
+</script>
+</head>
+
+<body>
+<div id="header">
+   <div id="logo"></div>
+</div>
+<input type='file' accept='*' onchange='openFile(event)'><br>
+<p>Please input your own jason file to fill the Calendar:)</p>
+<img id='output'>
+<div id="main" style="width:1060px">
+   <div id='calendar'></div>
+
+</div>
+<div id="footer">
+    <p>Powered by Hao Wu</p>
+</div>
+
+
+
+</body>
+</html>
+
